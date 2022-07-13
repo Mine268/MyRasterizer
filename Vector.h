@@ -6,11 +6,14 @@
 
 #include <type_traits>
 #include <array>
+#include <iostream>
+#include "mr_tookit.h"
 
 namespace mr {
 
     template<std::size_t Dim, typename VT>
     class Vector {
+
         static_assert(Dim != 0, "[Vector] 0 dimension error.");
 
         std::array<VT, Dim> vec{};
@@ -26,13 +29,23 @@ namespace mr {
 
         Vector(Vector const &) = default;
 
-        Vector(Vector&&) noexcept;
+        Vector(Vector &&) noexcept;
 
         VT &at(std::size_t ix);
 
         VT const &at(std::size_t ix) const;
 
-        static VT dot(Vector const&, Vector const&) ;
+        void normalize();
+
+        Vector normalization();
+
+        static VT dot(Vector const &, Vector const &);
+
+        template<typename = void>
+        static VT cross(Vector<2, VT> const &, Vector<2, VT> const &);
+
+        template<typename = void>
+        static Vector<3, VT> cross(Vector<3, VT> const &, Vector<3, VT> const &);
 
         template<typename... VTs>
         Vector &set(VTs...);
@@ -61,6 +74,9 @@ namespace mr {
         friend Vector operator*(Vector<D, VT2> const &lhs, VT1 v) { // *
             return v * lhs;
         }
+
+        template<std::size_t D, typename VT2>
+        friend std::ostream &operator<<(std::ostream &, Vector<D, VT2> const &);
     };
 
     template<std::size_t Dim, typename VT>
@@ -151,6 +167,57 @@ namespace mr {
     template<std::size_t Dim, typename VT>
     Vector<Dim, VT>::Vector(Vector &&rhs) noexcept {
         this->vec = std::move(rhs.vec);
+    }
+
+    template<std::size_t Dim, typename VT>
+    template<typename>
+    VT Vector<Dim, VT>::cross(const Vector<2, VT> &lhs, const Vector<2, VT> &rhs) {
+        return lhs.at(0) * rhs.at(1) - lhs.at(1) * rhs.at(0);
+    }
+
+    template<std::size_t Dim, typename VT>
+    template<typename>
+    Vector<3, VT> Vector<Dim, VT>::cross(const Vector<3, VT> &lhs, const Vector<3, VT> &rhs) {
+        Vector<3, VT> ret{};
+        ret.set(
+                lhs.at(1) * rhs.at(2) - lhs.at(2) * rhs.at(1),
+                lhs.at(2) * rhs.at(0) - lhs.at(0) * rhs.at(2),
+                lhs.at(0) * rhs.at(1) - lhs.at(1) * rhs.at(0)
+        );
+        return ret;
+    }
+
+    template<std::size_t D, typename VT2>
+    std::ostream &operator<<(std::ostream &strm, const Vector<D, VT2> &rhs) {
+        strm << "[ ";
+        for (std::size_t i = 0; i < D; ++i) {
+            strm << rhs.at(i) << ' ';
+        }
+        strm << "]";
+        return strm;
+    }
+
+    template<std::size_t Dim, typename VT>
+    void Vector<Dim, VT>::normalize() {
+        auto a = this->at(0) * this->at(0);
+        for (std::size_t i = 0; i < Dim; ++i) {
+            a += this->at(i) * this->at(i);
+        }
+        if (isZero(a)) {
+            return;
+        } else {
+            auto is_a = 1 / square(a);
+            for (std::size_t i = 0; i < Dim; ++i) {
+                this->at(i) = this->at(i) * is_a;
+            }
+        }
+    }
+
+    template<std::size_t Dim, typename VT>
+    Vector<Dim, VT> Vector<Dim, VT>::normalization() {
+        auto ret = *this;
+        ret.normalize();
+        return ret;
     }
 
 } // rm

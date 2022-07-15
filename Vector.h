@@ -7,6 +7,8 @@
 #include <type_traits>
 #include <array>
 #include <iostream>
+#include <algorithm>
+
 #include "mr_tookit.h"
 
 namespace mr {
@@ -31,13 +33,20 @@ namespace mr {
 
         Vector(Vector &&) noexcept;
 
+        template<typename... VTs>
+        Vector(VTs...);
+
         VT &at(std::size_t ix);
 
         VT const &at(std::size_t ix) const;
 
         void normalize();
 
-        Vector normalization();
+        Vector normalization() const;
+
+        VT length() const;
+
+        VT length2() const;
 
         static VT dot(Vector const &, Vector const &);
 
@@ -200,7 +209,7 @@ namespace mr {
     template<std::size_t Dim, typename VT>
     void Vector<Dim, VT>::normalize() {
         auto a = this->at(0) * this->at(0);
-        for (std::size_t i = 0; i < Dim; ++i) {
+        for (std::size_t i = 1; i < Dim; ++i) {
             a += this->at(i) * this->at(i);
         }
         if (isZero(a)) {
@@ -214,10 +223,34 @@ namespace mr {
     }
 
     template<std::size_t Dim, typename VT>
-    Vector<Dim, VT> Vector<Dim, VT>::normalization() {
+    Vector<Dim, VT> Vector<Dim, VT>::normalization() const {
         auto ret = *this;
         ret.normalize();
         return ret;
+    }
+
+    template<std::size_t Dim, typename VT>
+    VT Vector<Dim, VT>::length() const {
+        auto a = this->at(0) * this->at(0);
+        for (std::size_t i = 1; i < Dim; ++i) {
+            a += this->at(i) * this->at(i);
+        }
+        return square(a);
+    }
+
+    template<std::size_t Dim, typename VT>
+    template<typename... VTs>
+    Vector<Dim, VT>::Vector(VTs... args) {
+        this->set(args...);
+    }
+
+    template<std::size_t Dim, typename VT>
+    VT Vector<Dim, VT>::length2() const {
+        auto a = this->at(0) * this->at(0);
+        for (std::size_t i = 1; i < Dim; ++i) {
+            a += this->at(i) * this->at(i);
+        }
+        return a;
     }
 
 } // rm

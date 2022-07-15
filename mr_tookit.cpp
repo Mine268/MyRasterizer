@@ -5,14 +5,15 @@
 #include "mr_tookit.h"
 
 namespace mr {
-    template<> float zeroCheckingValue<float> = 1e-5;
-    template<> double zeroCheckingValue<double> = 1e-5;
+    template<> float zeroCheckingValue<float> = 1e-9;
+    template<> double zeroCheckingValue<double> = 1e-9;
     template<> int zeroCheckingValue<int> = 0;
     template<> unsigned zeroCheckingValue<unsigned> = 0;
     template<> long zeroCheckingValue<long> = 0;
     template<> unsigned long zeroCheckingValue<unsigned long> = 0;
     template<> long long zeroCheckingValue<long long> = 0;
     template<> unsigned long long zeroCheckingValue<unsigned long long> = 0;
+    template<typename T> T zeroCheckingValue{};
 
     int square(int v) {
         return static_cast<int>(std::sqrt(v));

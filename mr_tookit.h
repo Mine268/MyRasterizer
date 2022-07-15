@@ -15,6 +15,12 @@ namespace mr {
         return zeroCheckingValue<T> * zeroCheckingValue<T> >= v * v;
     }
 
+    /**
+     * square function by iteration
+     * @tparam T type of the input value
+     * @param v the value to be squared(assume to be none-negative)
+     * @return the squared value
+     */
     template<typename T>
     T square(T v) {
         auto x0 = v;

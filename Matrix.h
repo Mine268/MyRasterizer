@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "mr_tookit.h"
+#include "ResidualMat.h"
 
 namespace mr {
 
@@ -240,12 +241,17 @@ namespace mr {
         } else if constexpr (ROW == 2) {
             return this->at(0, 0) * this->at(1, 1) - this->at(1, 0) * this->at(0, 1);
         } else {
-            decltype(this->at(0, 0) * ResidualMat<ROW - 1, COL - 1, decltype(*this)>{*this, 0, 0}.determine()) ret = 0;
+            decltype(this->at(0, 0) * ResidualMat<ROW - 1, COL - 1, std::remove_reference_t<decltype(*this)>>{*this, 0,
+                                                                                                              0}.determine()) ret = 0;
             for (std::size_t i = 0; i < ROW; i += 2) {
-                ret = ret + this->at(i, 0) * ResidualMat<ROW - 1, COL - 1, decltype(*this)>{*this, i, 0}.determine();
+                ret = ret + this->at(i, 0) *
+                            ResidualMat<ROW - 1, COL - 1, std::remove_reference_t<decltype(*this)>>{*this, i,
+                                                                                                    0}.determine();
             }
             for (std::size_t i = 1; i < ROW; i += 2) {
-                ret = ret - this->at(i, 0) * ResidualMat<ROW - 1, COL - 1, decltype(*this)>{*this, i, 0}.determine();
+                ret = ret - this->at(i, 0) *
+                            ResidualMat<ROW - 1, COL - 1, std::remove_reference_t<decltype(*this)>>{*this, i,
+                                                                                                    0}.determine();
             }
             return ret;
         }
@@ -262,7 +268,9 @@ namespace mr {
 
         for (std::size_t i = 0; i < ROW; ++i) {
             for (std::size_t j = 0; j < COL; ++j) {
-                ret.at(j, i) = ResidualMat<ROW - 1, COL - 1, decltype(*this)>{*this, i, j}.determine() / det;
+                ret.at(j, i) = ResidualMat<ROW - 1, COL - 1, std::remove_reference_t<decltype(*this)>>{*this, i,
+                                                                                                       j}.determine() /
+                               det;
                 if ((i + j) & 1) {
                     ret.at(j, i) = -ret.at(j, i);
                 }

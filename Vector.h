@@ -34,7 +34,7 @@ namespace mr {
         Vector(Vector &&) noexcept;
 
         template<typename... VTs>
-        Vector(VTs &&...);
+        explicit Vector(VTs &&...);
 
         VT &at(std::size_t ix);
 
@@ -59,6 +59,14 @@ namespace mr {
         template<typename... VTs>
         Vector &set(VTs &&...);
 
+        Vector<4, VT> pToVec4() const;
+
+        Vector<3, VT> pToVec3() const;
+
+        Vector<4, VT> vToVec4() const;
+
+        Vector<3, VT> vToVec3() const;
+
         Vector &operator=(Vector const &rhs); // assignment
 
         Vector &operator=(Vector &&rhs) noexcept;
@@ -66,6 +74,8 @@ namespace mr {
         Vector operator+(Vector const &rhs);// plus
 
         Vector operator-(Vector const &rhs); // minus
+
+        Vector operator/(VT v); // div
 
         Vector operator-(); // negative
 
@@ -142,6 +152,15 @@ namespace mr {
     }
 
     template<std::size_t Dim, typename VT>
+    Vector<Dim, VT> Vector<Dim, VT>::operator/(VT v) {
+        Vector<Dim, VT> ret{};
+        for (std::size_t i = 0; i < Dim; ++i) {
+            ret.at(i) = this->at(i) / v;
+        }
+        return ret;
+    }
+
+    template<std::size_t Dim, typename VT>
     Vector<Dim, VT> Vector<Dim, VT>::operator-() {
         Vector<Dim, VT> ret{};
         for (std::size_t i = 0; i < Dim; ++i) {
@@ -156,6 +175,32 @@ namespace mr {
         static_assert(Dim >= sizeof...(VTs), "[Vector] too many arguments for assignment.");
         this->template setRec<0>(args...);
         return *this;
+    }
+
+    template<std::size_t Dim, typename VT>
+    Vector<4, VT> Vector<Dim, VT>::pToVec4() const {
+        static_assert(Dim == 3, "[Vector::pToVec4] vec3 please.");
+        return Vector<4, VT>{this->at(0), this->at(1), this->at(2), mr::unitValue<VT>};
+    }
+
+    template<std::size_t Dim, typename VT>
+    Vector<3, VT> Vector<Dim, VT>::pToVec3() const {
+        static_assert(Dim == 4, "[Vector::pToVec4] vec4 please.");
+        return Vector<3, VT>{this->at(0) / this->at(3),
+                             this->at(1) / this->at(3),
+                             this->at(2) / this->at(3)};
+    }
+
+    template<std::size_t Dim, typename VT>
+    Vector<4, VT> Vector<Dim, VT>::vToVec4() const {
+        static_assert(Dim == 3, "[Vector::pToVec4] vec3 please.");
+        return Vector<4, VT>{this->at(0), this->at(1), this->at(2), mr::zeroValue<VT>};
+    }
+
+    template<std::size_t Dim, typename VT>
+    Vector<3, VT> Vector<Dim, VT>::vToVec3() const {
+        static_assert(Dim == 4, "[Vector::pToVec4] vec4 please.");
+        return Vector<3, VT>{this->at(0), this->at(1), this->at(2)};
     }
 
     template<std::size_t Dim, typename VT>

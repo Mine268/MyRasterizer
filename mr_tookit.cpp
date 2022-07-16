@@ -23,7 +23,16 @@ namespace mr {
     template<> unsigned long unitValue<unsigned long> = 1;
     template<> long long unitValue<long long> = 1;
     template<> unsigned long long unitValue<unsigned long long> = 1;
-    template<typename T> T unitValue{};
+
+    template<> float zeroValue<float> = 0;
+    template<> double zeroValue<double> = 0;
+    template<> int zeroValue<int> = 0;
+    template<> unsigned zeroValue<unsigned> = 0;
+    template<> long zeroValue<long> = 0;
+    template<> unsigned long zeroValue<unsigned long> = 0;
+    template<> long long zeroValue<long long> = 0;
+    template<> unsigned long long zeroValue<unsigned long long> = 0;
+    template<typename T> T zeroValue{};
 
     int square(int v) {
         return static_cast<int>(std::sqrt(v));

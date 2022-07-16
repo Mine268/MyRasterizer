@@ -17,7 +17,10 @@ namespace mr {
     template<std::size_t ROW, std::size_t COL, typename T>
     class ResidualMat;
 
-        template<typename T>
+    template<typename T>
+    extern T zeroValue;
+
+    template<typename T>
     extern T zeroCheckingValue;
 
     template<typename T>

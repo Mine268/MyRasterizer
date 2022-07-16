@@ -14,6 +14,16 @@ namespace mr {
     template<> long long zeroCheckingValue<long long> = 0;
     template<> unsigned long long zeroCheckingValue<unsigned long long> = 0;
     template<typename T> T zeroCheckingValue{};
+    
+    template<> float unitValue<float> = 1;
+    template<> double unitValue<double> = 1;
+    template<> int unitValue<int> = 1;
+    template<> unsigned unitValue<unsigned> = 1;
+    template<> long unitValue<long> = 1;
+    template<> unsigned long unitValue<unsigned long> = 1;
+    template<> long long unitValue<long long> = 1;
+    template<> unsigned long long unitValue<unsigned long long> = 1;
+    template<typename T> T unitValue{};
 
     int square(int v) {
         return static_cast<int>(std::sqrt(v));

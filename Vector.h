@@ -21,10 +21,10 @@ namespace mr {
         std::array<VT, Dim> vec{};
 
         template<std::size_t ix, typename F, typename... Vs>
-        void setRec(F first, Vs... rest);
+        void setRec(F &&first, Vs &&... rest);
 
         template<std::size_t ix, typename F>
-        void setRec(F first);
+        void setRec(F &&first);
 
     public:
         Vector() = default;
@@ -34,7 +34,7 @@ namespace mr {
         Vector(Vector &&) noexcept;
 
         template<typename... VTs>
-        Vector(VTs...);
+        Vector(VTs &&...);
 
         VT &at(std::size_t ix);
 
@@ -57,7 +57,7 @@ namespace mr {
         static Vector<3, VT> cross(Vector<3, VT> const &, Vector<3, VT> const &);
 
         template<typename... VTs>
-        Vector &set(VTs...);
+        Vector &set(VTs &&...);
 
         Vector &operator=(Vector const &rhs); // assignment
 
@@ -92,7 +92,7 @@ namespace mr {
     VT Vector<Dim, VT>::dot(const Vector<Dim, VT> &lhs, const Vector<Dim, VT> &rhs) {
         VT ret = lhs.at(0) * rhs.at(0);
         for (std::size_t i = 1; i < Dim; ++i) {
-            ret += lhs.at(i) * rhs.at(i);
+            ret = ret + lhs.at(i) * rhs.at(i);
         }
         return ret;
     }
@@ -152,7 +152,7 @@ namespace mr {
 
     template<std::size_t Dim, typename VT>
     template<typename... VTs>
-    Vector<Dim, VT> &Vector<Dim, VT>::set(VTs... args) {
+    Vector<Dim, VT> &Vector<Dim, VT>::set(VTs &&... args) {
         static_assert(Dim >= sizeof...(VTs), "[Vector] too many arguments for assignment.");
         this->template setRec<0>(args...);
         return *this;
@@ -160,7 +160,7 @@ namespace mr {
 
     template<std::size_t Dim, typename VT>
     template<std::size_t ix, typename F, typename... Vs>
-    void Vector<Dim, VT>::setRec(F first, Vs... rest) {
+    void Vector<Dim, VT>::setRec(F &&first, Vs &&... rest) {
         static_assert(std::is_constructible_v<VT, F>, "[Vector] can construct vector scalar.");
         this->at(ix) = first;
         this->template setRec<ix + 1>(rest...);
@@ -168,7 +168,7 @@ namespace mr {
 
     template<std::size_t Dim, typename VT>
     template<std::size_t ix, typename F>
-    void Vector<Dim, VT>::setRec(F first) {
+    void Vector<Dim, VT>::setRec(F &&first) {
         static_assert(std::is_constructible_v<VT, F>, "[Vector] can construct vector scalar.");
         this->at(ix) = first;
     }
@@ -210,7 +210,7 @@ namespace mr {
     void Vector<Dim, VT>::normalize() {
         auto a = this->at(0) * this->at(0);
         for (std::size_t i = 1; i < Dim; ++i) {
-            a += this->at(i) * this->at(i);
+            a = a + this->at(i) * this->at(i);
         }
         if (isZero(a)) {
             return;
@@ -233,14 +233,14 @@ namespace mr {
     VT Vector<Dim, VT>::length() const {
         auto a = this->at(0) * this->at(0);
         for (std::size_t i = 1; i < Dim; ++i) {
-            a += this->at(i) * this->at(i);
+            a = a + this->at(i) * this->at(i);
         }
         return square(a);
     }
 
     template<std::size_t Dim, typename VT>
     template<typename... VTs>
-    Vector<Dim, VT>::Vector(VTs... args) {
+    Vector<Dim, VT>::Vector(VTs &&... args) {
         this->set(args...);
     }
 
@@ -248,7 +248,7 @@ namespace mr {
     VT Vector<Dim, VT>::length2() const {
         auto a = this->at(0) * this->at(0);
         for (std::size_t i = 1; i < Dim; ++i) {
-            a += this->at(i) * this->at(i);
+            a = a + this->at(i) * this->at(i);
         }
         return a;
     }

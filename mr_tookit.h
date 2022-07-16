@@ -7,8 +7,21 @@
 #include <cmath>
 
 namespace mr {
-    template<typename T>
+
+    template<std::size_t Dim, typename VT>
+    class Vector;
+
+    template<std::size_t ROW, std::size_t COL, typename T>
+    class Matrix;
+
+    template<std::size_t ROW, std::size_t COL, typename T>
+    class ResidualMat;
+
+        template<typename T>
     extern T zeroCheckingValue;
+
+    template<typename T>
+    extern T unitValue;
 
     template<typename T>
     bool isZero(T v)  {

@@ -3,4 +3,4 @@ project(MyRasterizer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(MyRasterizer main.cpp ObjectLoader.cpp ObjectLoader.h Vertex.cpp Vertex.h Triangle.cpp Triangle.h Vector.cpp Vector.h mr_tookit.h mr_tookit.cpp TriangleMesh.cpp TriangleMesh.h Matrix.cpp Matrix.h ResidualMat.cpp ResidualMat.h MeshObject.cpp MeshObject.h)
+add_executable(MyRasterizer main.cpp ObjectLoader.cpp ObjectLoader.h Vertex.cpp Vertex.h Triangle.cpp Triangle.h Vector.cpp Vector.h mr_tookit.h mr_tookit.cpp TriangleMesh.cpp TriangleMesh.h Matrix.cpp Matrix.h ResidualMat.cpp ResidualMat.h MeshObject.cpp MeshObject.h RGBRasterizedImage.cpp RGBRasterizedImage.h)

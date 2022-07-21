@@ -71,7 +71,7 @@ namespace mr {
 
     template<std::size_t TxDim, typename VT>
     std::vector<Triangle<2, VT>> const &TriangleMesh<TxDim, VT>::getTriangles() const {
-        return std::add_const_t<std::vector<Triangle<2, VT>> &>(triangles);
+        return triangles;
     }
 
     template<std::size_t TxDim, typename VT>

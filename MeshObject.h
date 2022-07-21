@@ -16,7 +16,7 @@ namespace mr {
 
         mr::TriangleMesh<TxDim, T> mesh;
 
-        mr::Matrix<4, 4, T> modelMat{}, viewMat{}, MVMat{}, invMVMat{}, projMat{};
+        mr::Matrix<4, 4, T> modelMat{}, viewMat{}, MVMat{}, tInvMVMat{}, projMat{};
 
     public:
 
@@ -57,21 +57,21 @@ namespace mr {
             viewMat{std::forward<mr::Matrix<4, 4, T>>(v)},
             projMat{std::forward<mr::Matrix<4, 4, T>>(p)} {
         MVMat = viewMat * modelMat;
-        invMVMat = MVMat.inverse().transpose();
+        tInvMVMat = MVMat.inverse().transpose();
     }
 
     template<std::size_t TxDim, typename T>
     void MeshObject<TxDim, T>::setModelMat(mr::Matrix<4, 4, T> &&m) {
         modelMat = std::forward<mr::Matrix<4, 4, T>>(m);
         MVMat = viewMat * modelMat;
-        invMVMat = MVMat.inverse().transpose();
+        tInvMVMat = MVMat.inverse().transpose();
     }
 
     template<std::size_t TxDim, typename T>
     void MeshObject<TxDim, T>::setViewMat(mr::Matrix<4, 4, T> &&m) {
         viewMat = std::forward<mr::Matrix<4, 4, T>>(m);
         MVMat = viewMat * modelMat;
-        invMVMat = MVMat.inverse().transpose();
+        tInvMVMat = MVMat.inverse().transpose();
     }
 
     template<std::size_t TxDim, typename T>
@@ -119,7 +119,7 @@ namespace mr {
         auto tri = mesh.at(i);
         for (auto &v: tri.vertex) {
             v.position = (MVMat * v.position.pToVec4()).pToVec3();
-            v.normal = (invMVMat * v.normal.vToVec4()).vToVec3();
+            v.normal = (tInvMVMat * v.normal.vToVec4()).vToVec3();
             v.normal.normalize();
         }
         return tri;
@@ -127,7 +127,13 @@ namespace mr {
 
     template<std::size_t TxDim, typename T>
     Triangle<TxDim, T> MeshObject<TxDim, T>::getScreenTriangle(std::size_t i) const {
-        return Triangle<TxDim, T>();
+        auto tri = mesh.at(i);
+        for (auto &v: tri.vertex) {
+            v.position = (projMat * MVMat * v.position.pToVec4()).pToVec3();
+            v.normal = (tInvMVMat * v.normal.vToVec4()).vToVec3();
+            v.normal.normalize();
+        }
+        return tri;
     }
 
 } // mr

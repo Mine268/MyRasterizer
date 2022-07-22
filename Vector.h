@@ -8,6 +8,7 @@
 #include <array>
 #include <iostream>
 #include <algorithm>
+#include <cassert>
 
 #include "mr_tookit.h"
 
@@ -109,11 +110,13 @@ namespace mr {
 
     template<std::size_t Dim, typename VT>
     VT &Vector<Dim, VT>::at(std::size_t ix) {
+        assert(ix < Dim);
         return this->vec.at(ix);
     }
 
     template<std::size_t Dim, typename VT>
     VT const &Vector<Dim, VT>::at(std::size_t ix) const {
+        assert(ix < Dim);
         return this->vec.at(ix);
     }
 

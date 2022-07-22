@@ -18,13 +18,15 @@ namespace mr {
     class RGBRasterizedImage {
         // pixel value type
         using pixel_valtype = struct {
-            unsigned char red, green, blue;
+            float red, green, blue;
         };
 
         // height & width of the image
         std::size_t width{}, height{};
         // where image is stored
         pixel_valtype *imageArr{nullptr};
+        // get int
+        static int discreteFloat(float) ;
 
     public:
 

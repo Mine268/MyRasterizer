@@ -47,9 +47,9 @@ namespace mr {
             fstrm << "255\n";
             for (std::size_t i = 0; i < height; ++i) {
                 for (std::size_t j = 0; j < width; ++j) {
-                    fstrm << static_cast<unsigned>(at(i, j).red) << ' '
-                          << static_cast<unsigned>(at(i, j).green) << ' '
-                          << static_cast<unsigned>(at(i, j).blue);
+                    fstrm << discreteFloat(at(i, j).red) << ' '
+                          << discreteFloat(at(i, j).green) << ' '
+                          << discreteFloat(at(i, j).blue);
                     if (j < width - 1) {
                         fstrm << '\t';
                     }
@@ -59,6 +59,12 @@ namespace mr {
         }
 
         fstrm.close();
+    }
+
+    int RGBRasterizedImage::discreteFloat(float f) {
+        if (f < 0) f = 0;
+        if (f > 1) f = 1;
+        return static_cast<int>(f * 255);
     }
 
 } // mr

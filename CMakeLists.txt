@@ -20,5 +20,8 @@ add_library(ResidualMat ResidualMat.cpp)
 
 add_library(RGBRasterizedImage RGBRasterizedImage.cpp)
 
+add_library(Camera Camera.cpp Camera.h)
+
 add_executable(MyRasterizer main.cpp
-        ObjectLoader Vertex Triangle Vector mr_tookit TriangleMesh Matrix ResidualMat MeshObject RGBRasterizedImage)
+        ObjectLoader Vertex Triangle Vector mr_tookit TriangleMesh Matrix ResidualMat MeshObject RGBRasterizedImage
+        Camera)

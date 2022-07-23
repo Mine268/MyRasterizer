@@ -49,6 +49,8 @@ namespace mr {
 
         VT length2() const;
 
+        mr::Matrix<3, 3, VT> getDual() const;
+
         static VT dot(Vector const &, Vector const &);
 
         template<typename = void>
@@ -287,18 +289,29 @@ namespace mr {
     }
 
     template<std::size_t Dim, typename VT>
-    template<typename... VTs>
-    Vector<Dim, VT>::Vector(VTs &&... args) {
-        this->set(args...);
-    }
-
-    template<std::size_t Dim, typename VT>
     VT Vector<Dim, VT>::length2() const {
         auto a = this->at(0) * this->at(0);
         for (std::size_t i = 1; i < Dim; ++i) {
             a = a + this->at(i) * this->at(i);
         }
         return a;
+    }
+
+
+    template<std::size_t Dim, typename VT>
+    Matrix<3, 3, VT> Vector<Dim, VT>::getDual() const {
+        static_assert(Dim == 3, "[Vector:getDual] only for dim-3 vector.");
+        return Matrix<3, 3, VT>{
+            0, -this->at(2), this->at(1),
+            this->at(2), 0, -this->at(0),
+            -this->at(1), this->at(0), 0
+        };
+    }
+
+    template<std::size_t Dim, typename VT>
+    template<typename... VTs>
+    Vector<Dim, VT>::Vector(VTs &&... args) {
+        this->set(args...);
     }
 
 } // rm

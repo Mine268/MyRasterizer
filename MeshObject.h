@@ -49,16 +49,19 @@ namespace mr {
     template<std::size_t TxDim>
     MeshObject<TxDim> &MeshObject<TxDim>::scaleX(float s) {
         modelMat.at(0, 0) *= s;
+        return *this;
     }
 
     template<std::size_t TxDim>
     MeshObject<TxDim> &MeshObject<TxDim>::scaleY(float s) {
         modelMat.at(1, 1) *= s;
+        return *this;
     }
 
     template<std::size_t TxDim>
     MeshObject<TxDim> &MeshObject<TxDim>::scaleZ(float s) {
         modelMat.at(2, 2) *= s;
+        return *this;
     }
 
     template<std::size_t TxDim>
@@ -73,6 +76,7 @@ namespace mr {
                 rotMat3.at(2, 0), rotMat3.at(2, 1), rotMat3.at(2, 2), 0,
                 0, 0, 0, 1
         } * modelMat;
+        return *this;
     }
 
     template<std::size_t TxDim>
@@ -80,11 +84,12 @@ namespace mr {
         modelMat.at(0, 3) = modelMat.at(0, 3) + trans.at(0);
         modelMat.at(1, 3) = modelMat.at(1, 3) + trans.at(1);
         modelMat.at(2, 3) = modelMat.at(2, 3) + trans.at(2);
+        return *this;
     }
 
     template<std::size_t TxDim>
     const mr::Matrix<4, 4, float> &MeshObject<TxDim>::getModelMat() const {
-        return mesh;
+        return modelMat;
     }
 
 } // mr

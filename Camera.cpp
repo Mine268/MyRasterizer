@@ -7,7 +7,9 @@
 #include "Camera.h"
 
 namespace mr {
-    Camera::Camera(float w, float h, float asp, const Vector<3, float> &pos, const Vector<3, float> &dir,
+    Camera::Camera(float w, float h, float asp,
+                   const Vector<3, float> &pos,
+                   const Vector<3, float> &dir,
                    const Vector<3, float> &up)
             : width{w}, height{h}, aspectRatio{asp},
               position{pos}, direction{dir.normalization()}, upperSide{up.normalization()} {
@@ -30,15 +32,4 @@ namespace mr {
         }.inverse();
     }
 
-    mr::Matrix<4, 4, float> Camera::getICameraMatrix() const {
-        return mr::Matrix<4, 4, float>{
-                upperSide.at(2) * direction.at(1) - upperSide.at(1) * direction.at(2), upperSide.at(0),
-                -direction.at(0), position.at(0),
-                upperSide.at(0) * direction.at(2) - upperSide.at(2) * direction.at(0), upperSide.at(1),
-                -direction.at(1), position.at(1),
-                upperSide.at(1) * direction.at(0) - upperSide.at(0) * direction.at(1), upperSide.at(2),
-                -direction.at(2), position.at(2),
-                0, 0, 0, 1
-        };
-    }
 } // mr

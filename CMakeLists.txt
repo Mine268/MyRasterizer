@@ -22,6 +22,12 @@ add_library(RGBRasterizedImage RGBRasterizedImage.cpp)
 
 add_library(Camera Camera.cpp Camera.h)
 
+add_library(Scene Scene.cpp Scene.h)
+
+add_library(Light Light.h Light.cpp)
+add_library(ParallelLight ParallelLight.cpp ParallelLight.h)
+add_library(PointLight PointLight.cpp PointLight.h)
+
 add_executable(MyRasterizer main.cpp
         ObjectLoader Vertex Triangle Vector mr_tookit TriangleMesh Matrix ResidualMat MeshObject RGBRasterizedImage
-        Camera)
+        Camera Light ParallelLight Scene)

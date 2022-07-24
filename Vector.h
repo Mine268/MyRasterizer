@@ -74,9 +74,11 @@ namespace mr {
 
         Vector &operator=(Vector &&rhs) noexcept;
 
-        Vector operator+(Vector const &rhs);// plus
+        template<std::size_t D, typename V>
+        friend Vector<D, V> operator+(Vector<D, V> const &lhs, Vector<D, V> const &rhs);// plus
 
-        Vector operator-(Vector const &rhs); // minus
+        template<std::size_t D, typename V>
+        friend Vector<D, V> operator-(Vector<D, V> const &lhs, Vector<D, V> const &rhs);// minus
 
         Vector operator/(VT v); // div
 
@@ -138,20 +140,20 @@ namespace mr {
         return *this;
     }
 
-    template<std::size_t Dim, typename VT>
-    Vector<Dim, VT> Vector<Dim, VT>::operator+(const Vector &rhs) {
-        Vector<Dim, VT> ret{};
-        for (std::size_t i = 0; i < Dim; ++i) {
-            ret.at(i) = this->at(i) + rhs.at(i);
+    template<std::size_t D, typename V>
+    Vector<D, V> operator+(Vector<D, V> const &lhs, Vector<D, V> const &rhs) {
+        Vector<D, V> ret;
+        for (std::size_t i = 0; i < D; ++i) {
+            ret.at(i) = lhs.at(i) + rhs.at(i);
         }
         return ret;
     }
 
-    template<std::size_t Dim, typename VT>
-    Vector<Dim, VT> Vector<Dim, VT>::operator-(const Vector &rhs) {
-        Vector<Dim, VT> ret{};
-        for (std::size_t i = 0; i < Dim; ++i) {
-            ret.at(i) = this->at(i) - rhs.at(i);
+    template<std::size_t D, typename V>
+    Vector<D, V> operator-(Vector<D, V> const &lhs, Vector<D, V> const &rhs) {
+        Vector<D, V> ret;
+        for (std::size_t i = 0; i < D; ++i) {
+            ret.at(i) = lhs.at(i) - rhs.at(i);
         }
         return ret;
     }
@@ -313,5 +315,9 @@ namespace mr {
     Vector<Dim, VT>::Vector(VTs &&... args) {
         this->set(args...);
     }
+
+    using Vector3i = mr::Vector<3, int>;
+    using Vector3f = mr::Vector<3, float>;
+    using Vector3d = mr::Vector<3, double>;
 
 } // rm

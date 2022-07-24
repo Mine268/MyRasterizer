@@ -41,8 +41,6 @@ namespace mr {
          * @return the matrix
          */
         mr::Matrix<4, 4, float> getCameraMatrix() const;
-
-        mr::Matrix<4, 4, float> getICameraMatrix() const;
     };
 
 } // mr

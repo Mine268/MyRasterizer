@@ -67,6 +67,9 @@ namespace mr {
         template<std::size_t VecDim, std::size_t R, typename VT>
         friend Vector<R, VT> operator*(const Matrix<R, VecDim, VT> &, const Vector<VecDim, VT> &);
 
+        template<std::size_t R, std::size_t C, typename VT>
+        friend std::ostream &operator<<(std::ostream &, const Matrix<R, C, VT> &);
+
         Matrix operator-() const;
 
         Matrix<COL, ROW, T> transpose() const;
@@ -199,6 +202,26 @@ namespace mr {
             }
         }
         return std::move(ret);
+    }
+
+    template<std::size_t R, std::size_t C, typename VT>
+    std::ostream &operator<<(std::ostream &strm, const Matrix<R, C, VT> &rhs) {
+        strm << '[';
+        for (std::size_t i = 0; i < R; ++i) {
+            strm << '[';
+            for (std::size_t j = 0; j < C; ++j) {
+                strm << '\t' << rhs.at(i, j);
+                if (j < C - 1) {
+                    strm << ',';
+                }
+            }
+            strm << ']';
+            if (i < R - 1) {
+                strm << ",\n";
+            }
+        }
+        strm << ']';
+        return strm;
     }
 
     template<std::size_t ROW, std::size_t COL, typename T>

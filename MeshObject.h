@@ -9,36 +9,34 @@
 #include "TriangleMesh.h"
 #include "Matrix.h"
 #include "Vector.h"
+#include "mr_tookit.h"
 
 namespace mr {
 
     template<std::size_t TxDim = 2>
     struct MeshObject {
 
-        mr::TriangleMesh<TxDim, float> mesh;
-
-        mr::Matrix<4, 4, float> modelMat{};
-
         explicit MeshObject(const TriangleMesh<TxDim, float> &);
 
         explicit MeshObject(TriangleMesh<TxDim, float> &&);
 
-        void scale(float);
+        MeshObject &scaleX(float);
 
-        void rotate(const mr::Vector<3, float> &, float);
+        MeshObject &scaleY(float);
 
-        void translate(const mr::Vector<3, float> &);
+        MeshObject &scaleZ(float);
 
-        mr::Matrix<4, 4, float> getModelMat();
+        MeshObject &rotate(const mr::Vector<3, float> &, float);
+
+        MeshObject &translate(const mr::Vector<3, float> &);
+
+        const mr::Matrix<4, 4, float> &getModelMat() const;
 
     private:
 
-        float scaleFactor{1.f}, rotAngle{0.f};
+        mr::TriangleMesh<TxDim, float> mesh;
 
-        mr::Vector<3, float> rotDirection{0, 0, 1}, translationVec{0, 0, 0};
-
-        // scale, rotate, translate
-        void updateModelMat();
+        mr::Matrix<4, 4, float> modelMat{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 
     };
 
@@ -49,54 +47,44 @@ namespace mr {
     MeshObject<TxDim>::MeshObject(TriangleMesh<TxDim, float> &&m) : mesh{std::move(m)} {}
 
     template<std::size_t TxDim>
-    void MeshObject<TxDim>::scale(float s) {
-        scaleFactor = s;
+    MeshObject<TxDim> &MeshObject<TxDim>::scaleX(float s) {
+        modelMat.at(0, 0) *= s;
     }
 
     template<std::size_t TxDim>
-    void MeshObject<TxDim>::rotate(const Vector<3, float> &axis, float angle) {
-        rotDirection = axis;
-        rotAngle = angle;
+    MeshObject<TxDim> &MeshObject<TxDim>::scaleY(float s) {
+        modelMat.at(1, 1) *= s;
     }
 
     template<std::size_t TxDim>
-    void MeshObject<TxDim>::translate(const Vector<3, float> &trans) {
-        translationVec = trans;
+    MeshObject<TxDim> &MeshObject<TxDim>::scaleZ(float s) {
+        modelMat.at(2, 2) *= s;
     }
 
     template<std::size_t TxDim>
-    mr::Matrix<4, 4, float> MeshObject<TxDim>::getModelMat() {
-        updateModelMat();
-        return mesh;
-    }
-
-    template<std::size_t TxDim>
-    void MeshObject<TxDim>::updateModelMat() {
-        auto scaleMat = mr::Matrix<4, 4, float>{
-                scaleFactor, 0, 0, 0,
-                0, scaleFactor, 0, 0,
-                0, 0, scaleFactor, 0,
-                0, 0, 0, 1};
-        auto transMat = mr::Matrix<4, 4, float>{
-                0, 0, 0, translationVec.at(0),
-                0, 0, 0, translationVec.at(1),
-                0, 0, 0, translationVec.at(2),
-                0, 0, 0, 1
-        };
-        static auto identity3 = mr::Matrix<3, 3, float>{
-                1, 0, 0, 0, 1, 0, 0, 0, 1
-        };
-        auto rotVecDual = rotDirection.getDual();
-        auto rotMat3 = identity3
-                + (1 - std::cos(rotAngle)) * rotVecDual * rotVecDual
-                + std::sin(rotAngle) * rotVecDual;
-        auto rotMat = mr::Matrix<4, 4, float>{
+    MeshObject<TxDim> &MeshObject<TxDim>::rotate(const Vector<3, float> &axis, float angle) {
+        auto rotVecDual = axis.getDual();
+        auto rotMat3 = mr::Matrix<3, 3, float>{1, 0, 0, 0, 1, 0, 0, 0, 1}
+                       + (1 - std::cos(angle)) * rotVecDual * rotVecDual
+                       + std::sin(angle) * rotVecDual;
+        modelMat = mr::Matrix<4, 4, float>{
                 rotMat3.at(0, 0), rotMat3.at(0, 1), rotMat3.at(0, 2), 0,
                 rotMat3.at(1, 0), rotMat3.at(1, 1), rotMat3.at(1, 2), 0,
                 rotMat3.at(2, 0), rotMat3.at(2, 1), rotMat3.at(2, 2), 0,
                 0, 0, 0, 1
-        };
-        mesh = transMat * rotMat * scaleMat;
+        } * modelMat;
+    }
+
+    template<std::size_t TxDim>
+    MeshObject<TxDim> &MeshObject<TxDim>::translate(const Vector<3, float> &trans) {
+        modelMat.at(0, 3) = modelMat.at(0, 3) + trans.at(0);
+        modelMat.at(1, 3) = modelMat.at(1, 3) + trans.at(1);
+        modelMat.at(2, 3) = modelMat.at(2, 3) + trans.at(2);
+    }
+
+    template<std::size_t TxDim>
+    const mr::Matrix<4, 4, float> &MeshObject<TxDim>::getModelMat() const {
+        return mesh;
     }
 
 } // mr

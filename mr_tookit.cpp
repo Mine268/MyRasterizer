@@ -5,6 +5,7 @@
 #include "mr_tookit.h"
 
 namespace mr {
+
     template<> float zeroCheckingValue<float> = 1e-9;
     template<> double zeroCheckingValue<double> = 1e-9;
     template<> int zeroCheckingValue<int> = 0;

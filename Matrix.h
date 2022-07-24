@@ -280,4 +280,8 @@ namespace mr {
         return std::move(ret);
     }
 
+    extern const mr::Matrix<3, 3, int> identity3i;
+    extern const mr::Matrix<3, 3, float> identity3f;
+    extern const mr::Matrix<3, 3, double> identity3d;
+
 } // mr

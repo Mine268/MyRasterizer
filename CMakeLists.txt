@@ -18,6 +18,8 @@ add_library(MeshObject MeshObject.cpp)
 add_library(Matrix Matrix.cpp)
 add_library(ResidualMat ResidualMat.cpp)
 
+add_library(ChannelImage ChannelImage.cpp ChannelImage.h)
+add_library(DepthBuffer DepthBuffer.cpp DepthBuffer.h)
 add_library(RGBRasterizedImage RGBRasterizedImage.cpp)
 
 add_library(Camera Camera.cpp Camera.h)

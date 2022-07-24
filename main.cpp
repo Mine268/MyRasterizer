@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <functional>
 
 #include "RGBRasterizedImage.h"
 #include "MeshObject.h"

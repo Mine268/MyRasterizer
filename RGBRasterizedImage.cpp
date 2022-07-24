@@ -6,32 +6,33 @@
 #include <iostream>
 
 #include "RGBRasterizedImage.h"
+#include "mr_tookit.h"
 
 namespace mr {
 
     RGBRasterizedImage::RGBRasterizedImage(std::size_t w, std::size_t h) :
-            width{w}, height{h}, imageArr{new pixel_valtype[w * h]} {
+            width{w}, height{h}, image{w, h} {
         assert(w > 0 && h > 0);
         clear();
     }
 
-    RGBRasterizedImage::~RGBRasterizedImage() {
-        delete[] imageArr;
+    RGBRasterizedImage::pixel &RGBRasterizedImage::at(std::size_t i, std::size_t j) {
+        assert(i < height && j < width);
+        return image.at(i, j);
     }
 
-    RGBRasterizedImage::pixel_valtype &RGBRasterizedImage::at(std::size_t i, std::size_t j) {
+    const RGBRasterizedImage::pixel &RGBRasterizedImage::at(std::size_t i, std::size_t j) const {
         assert(i < height && j < width);
-        return imageArr[i * width + j];
-    }
-
-    const RGBRasterizedImage::pixel_valtype &RGBRasterizedImage::at(std::size_t i, std::size_t j) const {
-        assert(i < height && j < width);
-        return imageArr[i * width + j];
+        return image.at(i, j);
     }
 
     void RGBRasterizedImage::clear() {
-        for (std::size_t i = 0; i < width * height; ++i) {
-            imageArr[i].red = imageArr[i].green = imageArr[i].blue = 0;
+        for (std::size_t i = 0; i < height; ++i) {
+            for (std::size_t j = 0; j < width; ++j) {
+                std::get<toUType(ChannelSelector::RED)>(image.at(i, j)) = 0;
+                std::get<toUType(ChannelSelector::GREEN)>(image.at(i, j)) = 0;
+                std::get<toUType(ChannelSelector::BLUE)>(image.at(i, j)) = 0;
+            }
         }
     }
 
@@ -47,9 +48,9 @@ namespace mr {
             fstrm << "255\n";
             for (std::size_t i = 0; i < height; ++i) {
                 for (std::size_t j = 0; j < width; ++j) {
-                    fstrm << discreteFloat(at(i, j).red) << ' '
-                          << discreteFloat(at(i, j).green) << ' '
-                          << discreteFloat(at(i, j).blue);
+                    fstrm << discreteFloat(std::get<toUType(ChannelSelector::RED)>(image.at(i, j))) << ' '
+                          << discreteFloat(std::get<toUType(ChannelSelector::GREEN)>(image.at(i, j))) << ' '
+                          << discreteFloat(std::get<toUType(ChannelSelector::BLUE)>(image.at(i, j)));
                     if (j < width - 1) {
                         fstrm << '\t';
                     }

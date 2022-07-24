@@ -8,6 +8,11 @@
 
 namespace mr {
 
+    template<typename E>
+    constexpr auto toUType(E enumerator) noexcept {
+        return static_cast<std::underlying_type_t<E>>(enumerator);
+    }
+
     template<std::size_t Dim, typename VT>
     class Vector;
 

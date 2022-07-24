@@ -17,6 +17,8 @@ namespace mr {
 
         Light() = default;
 
+        virtual ~Light() = default;
+
         virtual mr::Vector<3, float> getIntensityAt(const mr::Vector<3, float> &) = 0;
 
         virtual mr::Vector<3, float> getLightDirectionAt(const mr::Vector<3, float> &) = 0;

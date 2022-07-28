@@ -47,19 +47,19 @@ namespace mr {
                 z_span = near - far,
                 x_span = static_cast<float>(width) / static_cast<float>(height) * y_span;
         return mr::Matrix<4, 4, float>{
-            2 / x_span, 0, 0, 0,
-            0, 2 / y_span, 0, 0,
-            0, 0, 2 / z_span, (near + far) / z_span,
-            0, 0, 0, 1
+                2 / x_span, 0, 0, 0,
+                0, 2 / y_span, 0, 0,
+                0, 0, 2 / z_span, (near + far) / z_span,
+                0, 0, 0, 1
         };
     }
 
     mr::Matrix<4, 4, float> Camera::getViewPortMat() const {
         return mr::Matrix<4, 4, float>{
-            width / 2.f, 0, 0, (width - 1) / 2.f,
-            0, height / 2.f, 0, (height - 1) / 2.f,
-            0, 0, 1, 0,
-            0, 0, 0, 1
+                static_cast<float>(width) / 2.f, 0, 0, static_cast<float>(width - 1) / 2.f,
+                0, static_cast<float>( height) / 2.f, 0, static_cast<float>(height - 1) / 2.f,
+                0, 0, 1, 0,
+                0, 0, 0, 1
         };
     }
 

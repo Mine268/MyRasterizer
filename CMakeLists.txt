@@ -32,4 +32,4 @@ add_library(PointLight PointLight.cpp PointLight.h)
 
 add_executable(MyRasterizer main.cpp
         ObjectLoader Vertex Triangle Vector mr_tookit TriangleMesh Matrix ResidualMat MeshObject RGBRasterizedImage
-        Camera Light ParallelLight Scene)
+        DepthBuffer Camera Light ParallelLight Scene)

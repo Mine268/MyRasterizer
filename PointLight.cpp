@@ -2,6 +2,8 @@
 // Created by mine268 on 2022-7-24.
 //
 
+#include <cmath>
+
 #include "PointLight.h"
 
 namespace mr {
@@ -15,6 +17,10 @@ namespace mr {
 
     mr::Vector<3, float> PointLight::getLightDirectionAt(const Vector<3, float> &p) {
         return (p - position).normalization();
+    }
+
+    float PointLight::getDistanceTo(const Vector<3, float> &shading_point) {
+        return (shading_point - position).length();
     }
 
 

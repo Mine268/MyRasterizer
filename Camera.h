@@ -14,7 +14,10 @@ namespace mr {
      */
     struct Camera {
         // width & height of the image
-        float width{}, height{};
+        std::size_t width{}, height{};
+
+        // near & far
+        float near, far;
 
         // distance between the camera & image plane defined by the ratio
         // height / distance
@@ -25,7 +28,8 @@ namespace mr {
         upperSide{}; // upper direction of the camera
 
         // construct
-        Camera(float w, float h, float asp,
+        Camera(std::size_t w, std::size_t h,
+               float n, float f, float asp,
                const mr::Vector<3, float> &pos,
                const mr::Vector<3, float> &dir,
                const mr::Vector<3, float> &up);
@@ -41,6 +45,24 @@ namespace mr {
          * @return the matrix
          */
         mr::Matrix<4, 4, float> getCameraMatrix() const;
+
+        /**
+         * Get the projection matrix
+         * @return proj matrix
+         */
+        mr::Matrix<4, 4, float> getProjMat() const;
+
+        /**
+         * Get the orth. matrix
+         * @return the matrix
+         */
+        mr::Matrix<4, 4, float> getOrthMat() const;
+
+        /**
+         * Get the viewport trans. mat.
+         * @return viewport trans. mat.
+         */
+        mr::Matrix<4, 4, float> getViewPortMat() const;
     };
 
 } // mr

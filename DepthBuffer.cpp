@@ -10,7 +10,7 @@ namespace mr {
         assert(w > 0 && h > 0);
         for (std::size_t i = 0; i < h; ++i) {
             for (std::size_t j = 0; j < w; ++j) {
-                depthBuffer.at(i, j) = -std::numeric_limits<float>::max();
+                depthBuffer.at(i, j) = std::numeric_limits<float>::min();
             }
         }
     }

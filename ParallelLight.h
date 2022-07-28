@@ -14,11 +14,13 @@ namespace mr {
      */
     class ParallelLight : virtual public Light {
 
-        mr::Vector<3, float> direction, intensity;
+        mr::Vector<3, float> direction, intensity, position;
 
     public:
 
-        ParallelLight(const mr::Vector<3, float> &, const mr::Vector<3, float> &);
+        ParallelLight(const mr::Vector<3, float> &, const mr::Vector<3, float> &, const mr::Vector<3, float> &);
+
+        float getDistanceTo(const mr::Vector<3, float> &) override;
 
         mr::Vector<3, float> getIntensityAt(const mr::Vector<3, float> &) override;
 

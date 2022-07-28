@@ -7,13 +7,14 @@
 #include "Camera.h"
 
 namespace mr {
-    Camera::Camera(float w, float h, float asp,
+    Camera::Camera(std::size_t w, std::size_t h,
+                   float n, float f, float asp,
                    const Vector<3, float> &pos,
                    const Vector<3, float> &dir,
                    const Vector<3, float> &up)
-            : width{w}, height{h}, aspectRatio{asp},
+            : width{w}, height{h}, near{n}, far{f}, aspectRatio{asp},
               position{pos}, direction{dir.normalization()}, upperSide{up.normalization()} {
-        assert(w > 0 && h > 0 && asp > 0);
+        assert(w > 0 && h > 0 && n < 0 && n > f && asp > 0);
     }
 
     float Camera::getDistance() const {
@@ -30,6 +31,36 @@ namespace mr {
                 -direction.at(2), position.at(2),
                 0, 0, 0, 1
         }.inverse();
+    }
+
+    mr::Matrix<4, 4, float> Camera::getProjMat() const {
+        return mr::Matrix<4, 4, float>{
+                near, 0, 0, 0,
+                0, near, 0, 0,
+                0, 0, near + far, near * far,
+                0, 0, -1, 0
+        };
+    }
+
+    mr::Matrix<4, 4, float> Camera::getOrthMat() const {
+        float y_span = -near * aspectRatio,
+                z_span = near - far,
+                x_span = static_cast<float>(width) / static_cast<float>(height) * y_span;
+        return mr::Matrix<4, 4, float>{
+            2 / x_span, 0, 0, 0,
+            0, 2 / y_span, 0, 0,
+            0, 0, 2 / z_span, (near + far) / z_span,
+            0, 0, 0, 1
+        };
+    }
+
+    mr::Matrix<4, 4, float> Camera::getViewPortMat() const {
+        return mr::Matrix<4, 4, float>{
+            width / 2.f, 0, 0, (width - 1) / 2.f,
+            0, height / 2.f, 0, (height - 1) / 2.f,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        };
     }
 
 } // mr

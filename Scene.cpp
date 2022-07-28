@@ -3,18 +3,19 @@
 //
 
 #include "Scene.h"
+#include "Matrix.h"
 
 #include <utility>
 
 namespace mr {
 
-    Scene::Scene(Camera cam, std::size_t w, std::size_t h) : camera{std::move(cam)}, image{w, h} {}
+    Scene::Scene(Camera cam, std::size_t w, std::size_t h) : camera{std::move(cam)}, image{w, h}, depthBuffer{w, h} {}
 
     void Scene::render(const std::string &path) {
+        const auto proj_mat = mr::Matrix<4, 4, float>{};
         for (auto &object : objects) {
-            for (auto &light : lights) {
-                renderLightOnObject(object, light);
-            }
+            const auto model_mat = object.getModelMat();
+            const auto view_mat = camera.getCameraMatrix();
         }
     }
 

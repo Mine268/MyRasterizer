@@ -32,6 +32,8 @@ namespace mr {
 
         const mr::Matrix<4, 4, float> &getModelMat() const;
 
+        const mr::TriangleMesh<TxDim, float> &getMesh() const;
+
     private:
 
         mr::TriangleMesh<TxDim, float> mesh;
@@ -90,6 +92,11 @@ namespace mr {
     template<std::size_t TxDim>
     const mr::Matrix<4, 4, float> &MeshObject<TxDim>::getModelMat() const {
         return modelMat;
+    }
+
+    template<std::size_t TxDim>
+    const mr::TriangleMesh<TxDim, float> &MeshObject<TxDim>::getMesh() const {
+        return this->mesh;
     }
 
 } // mr

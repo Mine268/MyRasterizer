@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "RGBRasterizedImage.h"
+#include "DepthBuffer.h"
 
 namespace mr {
 
@@ -25,6 +26,8 @@ namespace mr {
         std::vector<mr::Light> lights;
 
         mr::RGBRasterizedImage image;
+
+        mr::DepthBuffer depthBuffer;
 
         explicit Scene(mr::Camera , std::size_t, std::size_t);
 

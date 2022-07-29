@@ -13,6 +13,9 @@
 #include "RGBRasterizedImage.h"
 #include "DepthBuffer.h"
 
+#include <array>
+#include <tuple>
+
 namespace mr {
 
     // only 2-dim uv is supported here.
@@ -29,7 +32,7 @@ namespace mr {
 
         mr::DepthBuffer depthBuffer;
 
-        explicit Scene(mr::Camera , std::size_t, std::size_t);
+        explicit Scene(mr::Camera, std::size_t, std::size_t);
 
         ~Scene() = default;
 
@@ -37,7 +40,11 @@ namespace mr {
 
     private:
 
-        void renderLightOnObject(const mr::MeshObject<2> &, const mr::Light &);
+        static bool withInTriangle(const std::array<mr::Vector<4, float>, 3> &, float, float);
+
+        static std::tuple<float, float, float, float>
+        invBarycentric(const std::array<mr::Vector<4, float>, 3> &, const std::array<mr::Vector<4, float>, 3> &,
+                       float, float);
 
     };
 

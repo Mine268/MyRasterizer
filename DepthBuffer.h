@@ -5,6 +5,7 @@
 #pragma once
 
 #include <numeric>
+#include <string>
 
 #include "ChannelImage.h"
 
@@ -23,6 +24,12 @@ namespace mr {
         float &at(std::size_t i, std::size_t j);
 
         const float &at(std::size_t i, std::size_t j) const;
+
+        void output(const std::string &) const;
+
+    private:
+
+        static int discreteFloat(float);
 
     };
 

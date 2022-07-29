@@ -35,12 +35,6 @@ namespace mr {
                const mr::Vector<3, float> &up);
 
         /**
-         * Get the distance between camera and image plane.
-         * @return distance
-         */
-        float getDistance() const;
-
-        /**
          * Get the transformation putting camera at origin.
          * @return the matrix
          */

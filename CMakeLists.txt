@@ -1,35 +1,22 @@
-cmake_minimum_required(VERSION 3.22)
-project(MyRasterizer)
+cmake_minimum_required(VERSION 3.24)
 
-set(CMAKE_CXX_STANDARD 20)
+project(MyRasterizer2)
 
+# 需要使用 Eigen 库
+set(Eigen3_DIR "C:\\Eigen3\\share\\eigen3\\cmake")
+find_package(Eigen3 REQUIRED NO_MODULE)
+include_directories(${EIGEN3_INCLUDE_DIRS})
 
-add_library(mr_tookit mr_tookit.cpp)
+# 对象文件加载类
+add_library(obj_loader src/OBJ_loader.cpp)
 
-add_library(ObjectLoader ObjectLoader.cpp)
+# 三角形类 mesh
+add_library(mesh src/mesh.cpp)
 
-add_library(Vector Vector.cpp)
-add_library(Vertex Vertex.cpp)
-add_library(Triangle Triangle.cpp)
-add_library(TriangleMesh TriangleMesh.cpp)
+# 工具库
+add_library(utils src/utils.cpp)
+target_link_libraries(utils mesh obj_loader)
 
-add_library(MeshObject MeshObject.cpp)
-
-add_library(Matrix Matrix.cpp)
-add_library(ResidualMat ResidualMat.cpp)
-
-add_library(ChannelImage ChannelImage.cpp ChannelImage.h)
-add_library(DepthBuffer DepthBuffer.cpp DepthBuffer.h)
-add_library(RGBRasterizedImage RGBRasterizedImage.cpp)
-
-add_library(Camera Camera.cpp Camera.h)
-
-add_library(Scene Scene.cpp Scene.h)
-
-add_library(Light Light.h Light.cpp)
-add_library(ParallelLight ParallelLight.cpp ParallelLight.h)
-add_library(PointLight PointLight.cpp PointLight.h)
-
-add_executable(MyRasterizer main.cpp
-        ObjectLoader Vertex Triangle Vector mr_tookit TriangleMesh Matrix ResidualMat MeshObject RGBRasterizedImage
-        DepthBuffer Camera Light ParallelLight Scene)
+# 生成目标
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAME} utils mesh)

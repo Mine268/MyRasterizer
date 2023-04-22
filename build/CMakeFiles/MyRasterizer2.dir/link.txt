@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\MyRasterizer2.dir/objects.a
+C:\MinGW\mingw64\bin\ar.exe qc CMakeFiles\MyRasterizer2.dir/objects.a @CMakeFiles\MyRasterizer2.dir\objects1.rsp
+C:\MinGW\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\MyRasterizer2.dir/objects.a -Wl,--no-whole-archive -o MyRasterizer2.exe -Wl,--out-implib,libMyRasterizer2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\MyRasterizer2.dir\linklibs.rsp

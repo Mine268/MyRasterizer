@@ -1,0 +1,22 @@
+[
+{
+  "directory": "D:/work/MyRasterizer/build",
+  "command": "C:\\MinGW\\mingw64\\bin\\g++.exe  @CMakeFiles/obj_loader.dir/includes_CXX.rsp -g -o CMakeFiles\\obj_loader.dir\\src\\OBJ_loader.cpp.obj -c D:\\work\\MyRasterizer\\src\\OBJ_loader.cpp",
+  "file": "D:/work/MyRasterizer/src/OBJ_loader.cpp"
+},
+{
+  "directory": "D:/work/MyRasterizer/build",
+  "command": "C:\\MinGW\\mingw64\\bin\\g++.exe  @CMakeFiles/mesh.dir/includes_CXX.rsp -g -o CMakeFiles\\mesh.dir\\src\\mesh.cpp.obj -c D:\\work\\MyRasterizer\\src\\mesh.cpp",
+  "file": "D:/work/MyRasterizer/src/mesh.cpp"
+},
+{
+  "directory": "D:/work/MyRasterizer/build",
+  "command": "C:\\MinGW\\mingw64\\bin\\g++.exe  @CMakeFiles/utils.dir/includes_CXX.rsp -g -o CMakeFiles\\utils.dir\\src\\utils.cpp.obj -c D:\\work\\MyRasterizer\\src\\utils.cpp",
+  "file": "D:/work/MyRasterizer/src/utils.cpp"
+},
+{
+  "directory": "D:/work/MyRasterizer/build",
+  "command": "C:\\MinGW\\mingw64\\bin\\g++.exe  @CMakeFiles/MyRasterizer2.dir/includes_CXX.rsp -g -o CMakeFiles\\MyRasterizer2.dir\\src\\main.cpp.obj -c D:\\work\\MyRasterizer\\src\\main.cpp",
+  "file": "D:/work/MyRasterizer/src/main.cpp"
+}
+]

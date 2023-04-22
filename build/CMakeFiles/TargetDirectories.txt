@@ -1,0 +1,6 @@
+D:/work/MyRasterizer/build/CMakeFiles/obj_loader.dir
+D:/work/MyRasterizer/build/CMakeFiles/mesh.dir
+D:/work/MyRasterizer/build/CMakeFiles/utils.dir
+D:/work/MyRasterizer/build/CMakeFiles/MyRasterizer2.dir
+D:/work/MyRasterizer/build/CMakeFiles/edit_cache.dir
+D:/work/MyRasterizer/build/CMakeFiles/rebuild_cache.dir

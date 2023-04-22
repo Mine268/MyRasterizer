@@ -1,2 +1,0 @@
-C:\MinGW\mingw64\bin\ar.exe qc libtriangle.a CMakeFiles/triangle.dir/src/mesh.cpp.obj
-C:\MinGW\mingw64\bin\ranlib.exe libtriangle.a

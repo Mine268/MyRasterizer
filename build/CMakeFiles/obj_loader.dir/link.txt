@@ -1,2 +1,0 @@
-C:\MinGW\mingw64\bin\ar.exe qc libobj_loader.a CMakeFiles/obj_loader.dir/src/OBJ_loader.cpp.obj
-C:\MinGW\mingw64\bin\ranlib.exe libobj_loader.a

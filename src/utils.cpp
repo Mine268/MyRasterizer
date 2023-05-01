@@ -40,3 +40,40 @@ mesh_object loader_to_mesh_object(const objl::Loader& loader, std::size_t mesh_i
 
     return ret;
 }
+
+
+Eigen::Vector4f eu2homo(const Eigen::Vector3f& x3d) {
+    Eigen::Vector4f ret = Eigen::Vector4f::Ones();
+    ret.topRows(3) = x3d;
+    return ret;
+}
+
+
+Eigen::Vector3f homo2eu(const Eigen::Vector4f& x4d) {
+    Eigen::Vector3f ret = x4d.topRows(3);
+    ret /= x4d(3);
+    return ret;
+}
+
+
+// 分量运算当然更快，但是我懒得写了
+std::tuple<float, float, float>
+get_bc_weight(float x, float y,
+              const Eigen::Vector2f& v1,
+              const Eigen::Vector2f& v2,
+              const Eigen::Vector2f& v3) {
+    Eigen::Vector2f q(x, y);
+    Eigen::Vector2f u1, u2, u3;
+    Eigen::Matrix2f det1, det2, det3;
+    u1 = v1 - q;
+    u2 = v2 - q;
+    u3 = v3 - q;
+    det1 << u1, u2;
+    det2 << u2, u3;
+    det3 << u3, u1;
+    auto d1 = det1.determinant();
+    auto d2 = det2.determinant();
+    auto d3 = det3.determinant();
+    auto d = d1 + d2 + d3;
+    return std::make_tuple(d2 / d, d3 / d, d1 / d);
+}

@@ -8,7 +8,7 @@
 
 // Namespace: OBJL
 //
-// Description: The namespace that holds eveyrthing that
+// Description: The namespace that holds everything that
 //	is needed and used for the OBJ Model Loader
 namespace objl
 {
